@@ -119,7 +119,7 @@ resource "aws_lambda_permission" "orca_catalog_reporting_api_permission" {
   source_arn    = "${aws_api_gateway_rest_api.orca_api.execution_arn}/*/${aws_api_gateway_method.orca_catalog_reporting_api_method.http_method}${aws_api_gateway_resource.orca_catalog_reporting_api_resource_catalog_reconcile.path}"
 }
 
-# API details for  for request_status_for_granule lambda function
+# API details for  for request_status_for_granule lambda function  TODO: Rename/reorganize. Reused by job.
 resource "aws_api_gateway_resource" "request_status_for_granule_api_resource_recovery" {
   path_part   = "recovery"
   parent_id   = aws_api_gateway_rest_api.orca_api.root_resource_id
