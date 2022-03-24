@@ -4,23 +4,6 @@ locals {
 }
 
 
-# # Referenced Modules
-# lambda_security_group - Security Groups module reference
-# ------------------------------------------------------------------------------
-module "lambda_security_group" {
-  source = "../security_groups"
-  ## --------------------------
-  ## Cumulus Variables
-  ## --------------------------
-  ## REQUIRED
-  prefix                = var.prefix
-  rds_security_group_id = var.rds_security_group_id
-  vpc_id                = var.vpc_id
-  ## OPTIONAL
-  tags = var.tags
-}
-
-
 # =============================================================================
 # Ingest Lambdas Definitions and Resources
 # =============================================================================
@@ -43,7 +26,7 @@ resource "aws_lambda_function" "copy_to_glacier" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -78,7 +61,7 @@ resource "aws_lambda_function" "get_current_archive_list" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -107,7 +90,7 @@ resource "aws_lambda_function" "perform_orca_reconcile" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -141,7 +124,7 @@ resource "aws_lambda_function" "extract_filepaths_for_granule" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 }
 
@@ -165,7 +148,7 @@ resource "aws_lambda_function" "request_files" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -200,7 +183,7 @@ resource "aws_lambda_function" "copy_files_to_archive" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -252,7 +235,7 @@ resource "aws_lambda_function" "post_to_database" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -300,7 +283,7 @@ resource "aws_lambda_function" "request_status_for_granule" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -330,7 +313,7 @@ resource "aws_lambda_function" "request_status_for_job" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -357,7 +340,7 @@ resource "aws_lambda_function" "post_copy_request_to_queue" {
   timeout          = var.orca_recovery_lambda_timeout
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
   environment {
     variables = {
@@ -420,7 +403,7 @@ resource "aws_lambda_function" "orca_catalog_reporting" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -450,7 +433,7 @@ resource "aws_lambda_function" "post_to_catalog" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {
@@ -488,7 +471,6 @@ resource "aws_lambda_permission" "post_to_catalog_allow_sqs_trigger" {
 # ==============================================================================
 resource "aws_lambda_function" "db_deploy" {
   depends_on = [
-    module.lambda_security_group,
     var.restore_object_role_arn
   ]
 
@@ -508,7 +490,7 @@ resource "aws_lambda_function" "db_deploy" {
 
   vpc_config {
     subnet_ids         = var.lambda_subnet_ids
-    security_group_ids = [module.lambda_security_group.vpc_postgres_ingress_all_egress_id]
+    security_group_ids = [var.vpc_postgres_ingress_all_egress_id]
   }
 
   environment {

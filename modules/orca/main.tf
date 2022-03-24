@@ -6,6 +6,21 @@ locals {
 
 ## Referenced Modules
 
+# lambda_security_group - Security Groups module reference
+# ------------------------------------------------------------------------------
+module "lambda_security_group" {
+  source = "../security_groups"
+  ## --------------------------
+  ## Cumulus Variables
+  ## --------------------------
+  ## REQUIRED
+  prefix                = var.prefix
+  rds_security_group_id = var.rds_security_group_id
+  vpc_id                = var.vpc_id
+  ## OPTIONAL
+  tags = var.tags
+}
+
 ## orca_lambdas - lambdas module that calls iam and security_groups module
 ## =============================
 module "orca_lambdas" {
@@ -29,6 +44,7 @@ module "orca_lambdas" {
   ## --------------------------
   ## REQUIRED
   orca_default_bucket                                  = var.orca_default_bucket
+  vpc_postgres_ingress_all_egress_id                   = module.lambda_security_group.vpc_postgres_ingress_all_egress_id
   orca_secretsmanager_s3_access_credentials_secret_arn = module.orca_secretsmanager.s3_access_credentials_secret_arn
   orca_sqs_internal_report_queue_id                    = module.orca_sqs.orca_sqs_internal_report_queue_id
   orca_sqs_metadata_queue_arn                          = module.orca_sqs.orca_sqs_metadata_queue_arn
@@ -78,7 +94,7 @@ module "orca_lambdas_secondary" {
   orca_sqs_internal_report_queue_id             = module.orca_sqs.orca_sqs_internal_report_queue_id
   orca_sqs_s3_inventory_queue_arn               = module.orca_sqs.orca_sqs_s3_inventory_queue_arn
   restore_object_role_arn                       = module.orca_iam.restore_object_role_arn
-  vpc_postgres_ingress_all_egress_id            = module.orca_lambdas.vpc_postgres_ingress_all_egress_id
+  vpc_postgres_ingress_all_egress_id            = module.lambda_security_group.vpc_postgres_ingress_all_egress_id
 
   ## OPTIONAL
   orca_reconciliation_lambda_memory_size = var.orca_reconciliation_lambda_memory_size
