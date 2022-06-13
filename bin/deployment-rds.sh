@@ -16,6 +16,8 @@ echo "terraform {
     }
 }" > terraform.tf
 
+rm variables.tf
+
 aws s3 cp s3://rhassan-tf-state/main.tf .
 # Initialize deployment
 terraform init \
