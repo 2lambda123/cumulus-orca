@@ -7,8 +7,7 @@ export AWS_DEFAULT_REGION=$bamboo_AWS_DEFAULT_REGION
 
 
 
-aws s3api create-bucket --bucket rhassanorca-orca-primary --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2
-
+aws s3 ls
 
 
 # #clone cumulus orca template for deploying cumulus and orca
