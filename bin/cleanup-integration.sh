@@ -7,9 +7,9 @@ export AWS_DEFAULT_REGION=$bamboo_AWS_DEFAULT_REGION
 
 # your cleanup script here
 #clone cumulus orca template for deploying cumulus and orca
-git clone --branch $bamboo_CUMULUS_ORCA_DEPLOY_TEMPLATE --single-branch https://git.earthdata.nasa.gov/scm/orca/cumulus-orca-deploy-template.git
+git clone --branch $bamboo_CUMULUS_ORCA_DEPLOY_TEMPLATE_VERSION --single-branch https://git.earthdata.nasa.gov/scm/orca/cumulus-orca-deploy-template.git
 cd cumulus-orca-deploy-template
-echo "checked out to $bamboo_CUMULUS_ORCA_DEPLOY_TEMPLATE branch"
+echo "checked out to $bamboo_CUMULUS_ORCA_DEPLOY_TEMPLATE_VERSION branch"
 
 cd rds-cluster-tf
 echo "inside rds-cluster-tf"
