@@ -16,7 +16,7 @@ echo "terraform {
     }
 }" > terraform.tf
 
-rm variables.tf outputs.tf
+rm variables.tf outputs.tf main.tf
 
 # Initialize deployment
 terraform init \
