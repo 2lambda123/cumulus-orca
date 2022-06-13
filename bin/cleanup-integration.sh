@@ -6,7 +6,15 @@ export AWS_SECRET_ACCESS_KEY=$bamboo_AWS_SECRET_ACCESS_KEY
 export AWS_DEFAULT_REGION=$bamboo_AWS_DEFAULT_REGION
 
 
-aws s3 cp s3://rhassan-tf-state/delete/delete.tf .
+# Ensure remote state is configured for the deployment
+echo "terraform {
+        backend \"s3\" {
+            bucket = \"$bamboo_PREFIX-tf-state\"
+            key    = \"terraform\"
+            region = \"$bamboo_AWS_DEFAULT_REGION\"
+            dynamodb_table = \"$bamboo_PREFIX-tf-locks\"
+    }
+}" > terraform.tf
 
 # Initialize deployment
 terraform init \
