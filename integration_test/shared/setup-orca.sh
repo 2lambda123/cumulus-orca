@@ -26,13 +26,12 @@ echo "terraform {
     dynamodb_table = \"${bamboo_PREFIX}-tf-locks\"
   }
 }" >> terraform.tf
+terraform init -input=false
 
 #clone cumulus orca template for deploying RDS cluster
 cd ..
 git clone --branch $bamboo_CUMULUS_ORCA_DEPLOY_TEMPLATE_VERSION --single-branch https://git.earthdata.nasa.gov/scm/orca/cumulus-orca-deploy-template.git
 echo "cloned Cumulus, branch $bamboo_CUMULUS_ORCA_DEPLOY_TEMPLATE_VERSION"
-
-terraform init -input=false
 
 #rds-cluster-tf module
 cd cumulus-orca-deploy-template/rds-cluster-tf
@@ -61,7 +60,7 @@ sed 's/PREFIX/'"$bamboo_PREFIX"'/g' terraform.tfvars.example > terraform.tfvars
 sed -e 's/PREFIX/'"$bamboo_PREFIX"'/g; s/us-east-1/'"$bamboo_AWS_DEFAULT_REGION"'/g' terraform.tf.example > terraform.tf
 terraform init -input=false
 
-cd ..
+cd ../..
 # Remove all prevent_destroy properties
 for f in $(find cumulus-orca-deploy-template -name '*.tf');
 do
