@@ -278,21 +278,21 @@ plan:
   key: PL
   name: prototype-latest
 stages:
-- Deploy DR ORCA Buckets:
-    manual: true
-    final: false
-    jobs:
-    - Deploy DR ORCA buckets
-- Deploy ORCA Buckets and Cumulus ORCA modules:
-    manual: true
-    final: false
-    jobs:
-    - Deploy ORCA buckets and modules
-- Clean up ORCA buckets and modules:
-    manual: true
-    final: false
-    jobs:
-    - Clean up ORCA buckets and modules
+# - Deploy DR ORCA Buckets:
+#     manual: true
+#     final: false
+#     jobs:
+#     - Deploy DR ORCA buckets
+# - Deploy ORCA Buckets and Cumulus ORCA modules:
+#     manual: true
+#     final: false
+#     jobs:
+#     - Deploy ORCA buckets and modules
+# - Clean up ORCA buckets and modules:
+#     manual: true
+#     final: false
+#     jobs:
+#     - Clean up ORCA buckets and modules
 - Clean up DR ORCA buckets:
     manual: true
     final: false
