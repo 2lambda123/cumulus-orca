@@ -300,73 +300,73 @@ stages:
     - Clean up DR ORCA buckets
 
 #job for deploying ORCA buckets in DR account
-Deploy DR ORCA buckets:
-  key: DDROB
-  other:
-    clean-working-dir: true
-  docker:
-    image: maven.earthdata.nasa.gov/cumulus_orca
-    volumes:
-      ${bamboo.working.directory}: ${bamboo.working.directory}
-      ${bamboo.tmp.directory}: ${bamboo.tmp.directory}
-  tasks:
-  - checkout:
-      force-clean-build: 'true'
-      description: Checkout Default Repository
-  - script:
-      interpreter: SHELL
-      scripts:
-      - |-
-        #!/bin/bash
-        bash integration_test/input-validation.sh
-        . ./integration_test/shared/setup-dr-buckets.sh
-        bash integration_test/deployment-dr-buckets.sh
-         
-#job for deploying ORCA buckets, Cumulus and ORCA modules
-Deploy ORCA buckets and modules:
-  key: DOBM
-  other:
-    clean-working-dir: true
-    # Some plugin configurations are not supported by YAML Specs
-  docker:
-    image: maven.earthdata.nasa.gov/cumulus_orca
-    volumes:
-      ${bamboo.working.directory}: ${bamboo.working.directory}
-      ${bamboo.tmp.directory}: ${bamboo.tmp.directory}
-  tasks:
-  - checkout:
-      force-clean-build: 'true'
-      description: Checkout Default Repository
-
-  - script:
-      interpreter: SHELL
-      scripts:
-      - |-
-        #!/bin/bash
-        . ./integration_test/shared/setup-orca.sh
-        bash integration_test/deployment-orca.sh
-
-# Job for cleaning up ORCA buckets, Cumulus, and ORCA modules
-Clean up ORCA buckets and modules:
-  key: CDROB
-  other:
-    clean-working-dir: true
-  docker:
-    image: maven.earthdata.nasa.gov/cumulus_orca
-    volumes:
-      ${bamboo.working.directory}: ${bamboo.working.directory}
-      ${bamboo.tmp.directory}: ${bamboo.tmp.directory}
-  tasks:
-  - checkout:
-      force-clean-build: 'true'
-      description: Checkout Default Repository
-  - script:
-      interpreter: SHELL
-      scripts:
-      - |-
-        #!/bin/bash
-        . ./integration_test/shared/setup-orca.sh
-        bash integration_test/cleanup/cleanup-orca.sh
+#Deploy DR ORCA buckets:
+#  key: DDROB
+#  other:
+#    clean-working-dir: true
+#  docker:
+#    image: maven.earthdata.nasa.gov/cumulus_orca
+#    volumes:
+#      ${bamboo.working.directory}: ${bamboo.working.directory}
+#      ${bamboo.tmp.directory}: ${bamboo.tmp.directory}
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'true'
+#      description: Checkout Default Repository
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - |-
+#        #!/bin/bash
+#        bash integration_test/input-validation.sh
+#        . ./integration_test/shared/setup-dr-buckets.sh
+#        bash integration_test/deployment-dr-buckets.sh
+#         
+##job for deploying ORCA buckets, Cumulus and ORCA modules
+#Deploy ORCA buckets and modules:
+#  key: DOBM
+#  other:
+#    clean-working-dir: true
+#    # Some plugin configurations are not supported by YAML Specs
+#  docker:
+#    image: maven.earthdata.nasa.gov/cumulus_orca
+#    volumes:
+#      ${bamboo.working.directory}: ${bamboo.working.directory}
+#      ${bamboo.tmp.directory}: ${bamboo.tmp.directory}
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'true'
+#      description: Checkout Default Repository
+#
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - |-
+#        #!/bin/bash
+#        . ./integration_test/shared/setup-orca.sh
+#        bash integration_test/deployment-orca.sh
+#
+## Job for cleaning up ORCA buckets, Cumulus, and ORCA modules
+#Clean up ORCA buckets and modules:
+#  key: CDROB
+#  other:
+#    clean-working-dir: true
+#  docker:
+#    image: maven.earthdata.nasa.gov/cumulus_orca
+#    volumes:
+#      ${bamboo.working.directory}: ${bamboo.working.directory}
+#      ${bamboo.tmp.directory}: ${bamboo.tmp.directory}
+#  tasks:
+#  - checkout:
+#      force-clean-build: 'true'
+#      description: Checkout Default Repository
+#  - script:
+#      interpreter: SHELL
+#      scripts:
+#      - |-
+#        #!/bin/bash
+#        . ./integration_test/shared/setup-orca.sh
+#        bash integration_test/cleanup/cleanup-orca.sh
 
 # Job for cleaning up ORCA buckets, Cumulus, and ORCA modules
 Clean up DR ORCA buckets:
