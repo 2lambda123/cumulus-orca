@@ -1,8 +1,8 @@
 
 # ------------------------------------------------------------------------------------------------
 #bamboo plan for running unit tests and doing a release
----
-version: 2
+# ---
+# version: 2
 # plan:
 #   project-key: ORCA
 #   key: OI
