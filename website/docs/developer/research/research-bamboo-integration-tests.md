@@ -1,6 +1,6 @@
 ---
 id: research-bamboo-integration-tests
-title: Research Notes on running integration tests in bamboo CI/CD
+title: Research Notes on running integration tests in bamboo CI/CD.
 description: Research Notes on deploying Cumulus and ORCA in bamboo CI/CD and running integration tests.
 ---
 
