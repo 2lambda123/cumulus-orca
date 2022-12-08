@@ -44,6 +44,11 @@ resource "aws_lb" "gql_app_lb" {
   subnets            = var.lambda_subnet_ids
   idle_timeout       = 30 # API Gateway locks us to 30 seconds.
   tags               = var.tags
+  access_logs {
+    bucket  = "rhrh-internal"
+    prefix  = "rhassan-lb-logs"
+    enabled = true
+  }
 }
 
 data "aws_lb" "gql_app_lb_data" {
