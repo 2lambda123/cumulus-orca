@@ -29,6 +29,7 @@ tar xvf Python-${PYTHON_VERSION}.tgz && \
 cd Python-*/ && \
 ./configure --enable-optimizations && \
 make altinstall && \
+export PATH="/usr/local/bin:$PATH" && \
 rm -f Python-${PYTHON_VERSION}.tgz
 
 # Install Terraform
