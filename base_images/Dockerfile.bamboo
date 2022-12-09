@@ -30,6 +30,8 @@ cd Python-*/ && \
 ./configure --enable-optimizations && \
 make altinstall && \
 export PATH="/usr/local/bin:$PATH" && \
+python -V \
+echo "version test" && \
 rm -f Python-${PYTHON_VERSION}.tgz
 
 # Install Terraform
