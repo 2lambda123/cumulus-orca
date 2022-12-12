@@ -30,9 +30,8 @@ cd Python-*/ && \
 ./configure --enable-optimizations && \
 make altinstall && \
 export PATH="/usr/local/bin:$PATH" && \
-python -V \
-echo "version test" && \
-rm -f Python-${PYTHON_VERSION}.tgz
+rm -f Python-${PYTHON_VERSION}.tgz && \
+ln -sf /usr/bin/python3.9 /usr/bin/python3
 
 # Install Terraform
 RUN \
