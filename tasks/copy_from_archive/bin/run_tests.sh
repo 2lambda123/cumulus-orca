@@ -34,10 +34,10 @@ source ../../bin/common/venv_management.sh
 ## -----------------------------------------------------------------------------
 run_and_check_returncode "create_and_activate_venv"
 trap 'deactivate_and_delete_venv' EXIT
-run_and_check_returncode "pip install -q --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org"
+run_and_check_returncode "pip3.9 install -q --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org"
 
 ## Install the requirements
-pip install -q -r requirements-dev.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
+pip3.9 install -q -r requirements-dev.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
 check_returncode $? "ERROR: pip install encountered an error."
 
 ## Check code formatting and styling
