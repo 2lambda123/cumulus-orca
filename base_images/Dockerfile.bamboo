@@ -29,7 +29,7 @@ ln -sf /usr/local/bin/python3.9 /usr/local/bin/python3 && \
 ln -sf /url/local/bin/pip3.9 /usr/local/bin/pip3 && \
 rm -f Python-${PYTHON_VERSION}.tgz && \
 rm -rf Python-${PYTHON_VERSION} && \
-pip3.9 install -q --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org pydoc-markdown
+/usr/local/bin/python3.9 -m pip install --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org pydoc-markdown
 
 # Install Terraform
 RUN \
