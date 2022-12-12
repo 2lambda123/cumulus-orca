@@ -35,10 +35,10 @@ source ../bin/common/venv_management.sh
 ## -----------------------------------------------------------------------------
 run_and_check_returncode "create_and_activate_venv"
 trap 'deactivate_and_delete_venv' EXIT
-run_and_check_returncode "pip3.9 install -q --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org"
+run_and_check_returncode "pip install -q --upgrade pip --trusted-host pypi.org --trusted-host files.pythonhosted.org"
 
 ## Install the requirements
-pip3.9 install -q -r requirements.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
+pip install -q -r requirements.txt --trusted-host pypi.org --trusted-host files.pythonhosted.org
 check_returncode $? "ERROR: pip install encountered an error."
 
 ## Check code formatting and styling
@@ -72,10 +72,10 @@ bandit -r orca_shared
 check_returncode $? "ERROR: Potential security or code issues found."
 
 
-# ## Check code third party libraries for CVE issues
-# echo "INFO: Running checks on third party libraries ..."
-# # safety check -r requirements.txt
-# check_returncode $? "ERROR: Potential security issues third party libraries."
+## Check code third party libraries for CVE issues
+echo "INFO: Running checks on third party libraries ..."
+# safety check -r requirements.txt
+check_returncode $? "ERROR: Potential security issues third party libraries."
 
 
 ## Run unit tests and check Coverage
