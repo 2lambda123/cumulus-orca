@@ -4,6 +4,11 @@ set -e
 base=$(pwd)
 failed=0
 
+# run snyk tests
+snyk iac test || true
+cd website && snyk test -d || true
+cd -
+
 # run tests for shared libraries
 echo
 echo "Running tests in shared_libraries"

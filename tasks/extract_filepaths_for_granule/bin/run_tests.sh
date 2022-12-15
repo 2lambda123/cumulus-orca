@@ -69,7 +69,6 @@ echo "INFO: Running code smell security tests ..."
 bandit -r *.py test
 check_returncode $? "ERROR: Potential security or code issues found."
 
-
 ## Run unit tests and check Coverage
 echo "INFO: Running unit and coverage tests ..."
 
