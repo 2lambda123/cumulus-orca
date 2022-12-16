@@ -4,10 +4,26 @@ set -e
 base=$(pwd)
 failed=0
 
-# run snyk tests
-snyk iac test || true
-cd website && snyk test -d || true
-cd -
+#
+if [[ ! $bamboo.agentId ]]; then
+  echo "Running in bamboo. Skipping..."
+else
+  echo "Running locally..."
+  # run snyk tests locally. Skip in bamboo due to authentication token requirement.
+  echo "Scanning Infrastructure as code with Snyk for potential vulnerabilities..."
+  snyk iac test --severity-threshold=high|| true
+  echo "Scanning open-source code with Snyk for potential vulnerabilities..."
+  cd website && snyk test -d --severity-threshold=high || true
+  cd -
+fi
+
+
+# # run snyk tests locally. Skip in bamboo due to authentication token requirement.
+# echo "Scanning Infrastructure as code with Snyk for potential vulnerabilities..."
+# snyk iac test --severity-threshold=high|| true
+# echo "Scanning open-source code with Snyk for potential vulnerabilities..."
+# cd website && snyk test -d --severity-threshold=high || true
+# cd -
 
 # run tests for shared libraries
 echo
