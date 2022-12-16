@@ -5,7 +5,7 @@ base=$(pwd)
 failed=0
 
 #
-if [[ ! $bamboo.agentId ]]; then
+if [[ ${bamboo.working.directory} ]]; then
   echo "Running in bamboo. Skipping..."
 else
   echo "Running locally..."
