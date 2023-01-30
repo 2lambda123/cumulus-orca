@@ -91,7 +91,7 @@ resource "aws_lb" "gql_app_lb" {
   }
   security_groups    = [aws_security_group.gql_security_group.id]
   subnets            = var.lambda_subnet_ids
-  idle_timeout       = 30 # API Gateway locks us to 30 seconds.
+  idle_timeout       = 360 # 5 minutes for serverless spinup, plus leeway for processing.
   tags               = var.tags
 }
 
