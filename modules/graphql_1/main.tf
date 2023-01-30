@@ -70,9 +70,9 @@ resource "aws_security_group" "gql_security_group" {
   }
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
+    from_port        = local.graphql_port
+    to_port          = local.graphql_port
+    protocol         = "tcp"
     cidr_blocks      = [data.aws_vpc.primary.cidr_block]
   }
 
@@ -252,9 +252,9 @@ resource "aws_security_group" "gql_task_security_group" {
 
   egress {
     description      = "Allow task to get the image from ghcr."
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
   }
 
