@@ -108,7 +108,7 @@ def create_session() -> Session:
 
 
 def get_state_machine_execution_results(
-    execution_arn, retry_interval_seconds=5, maximum_duration_seconds=60
+    execution_arn, retry_interval_seconds=5, maximum_duration_seconds=600
 ):
     start = datetime.datetime.utcnow()
     while True:
