@@ -6,6 +6,9 @@ from unittest import TestCase, mock
 
 import boto3
 
+# noinspection PyPackageRequirements
+from botocore.exceptions import ClientError
+
 import helpers
 
 
@@ -25,6 +28,7 @@ class TestMultipleGranules(TestCase):
             createdAt_time = int((time.time() + 5) * 1000)
             collection_name = uuid.uuid4().__str__()
             collection_version = uuid.uuid4().__str__()
+            recovery_bucket_name = helpers.recovery_bucket_name
             bucket_name = "orca-sandbox-s3-provider"    # standard bucket where initial file exists
             excluded_filetype = [".tar.gz"]
             key_name = "PODAAC/SWOT/ancillary_data_input_forcing_ECCO_V4r4.tar.gz"
@@ -134,6 +138,18 @@ class TestMultipleGranules(TestCase):
                 json.loads(step_function_results["output"]),
                 "Expected step function output not returned.",
             )
+
+            # verify that the object does NOT exist in recovery bucket
+            try:
+                head_object_output = boto3.client("s3").head_object(
+                    Bucket=recovery_bucket_name, Key=key_name)
+                if head_object_output["ResponseMetadata"]["HTTPStatusCode"] == 200:
+                    raise Exception(f"{key_name} already exists in {recovery_bucket_name}")
+            except ClientError as err:
+                self.assertEqual(
+                        "404",
+                        err.response["Error"]["Code"]
+                    )
             catalog_output = helpers.post_to_api(
                 my_session,
                 helpers.api_url + "/catalog/reconcile/",

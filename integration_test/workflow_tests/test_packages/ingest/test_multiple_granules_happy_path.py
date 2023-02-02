@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import time
 import uuid
 from unittest import TestCase, mock
@@ -28,7 +29,7 @@ class TestMultipleGranulesHappyPath(TestCase):
             collection_name = uuid.uuid4().__str__()
             collection_version = uuid.uuid4().__str__()
             bucket_name = "orca-sandbox-s3-provider"  # standard bucket where initial file exists
-            recovery_bucket_name = "doctest-orca-primary"
+            recovery_bucket_name = helpers.recovery_bucket_name
             excluded_filetype = []
             key_name_1 = "PODAAC/SWOT/ancillary_data_input_forcing_ECCO_V4r4.tar.gz"
             key_name_2 = "MOD09GQ/006/MOD09GQ.A2017025.h21v00.006.2017034065104.hdf"
@@ -37,26 +38,26 @@ class TestMultipleGranulesHappyPath(TestCase):
             copy_to_archive_input = {
                 "payload": {
                     "granules": [
-                    {
-                        "granuleId": granule_id_1,
-                        "createdAt": createdAt_time,
-                        "files": [
                         {
-                            "bucket": bucket_name,
-                            "key": key_name_1
-                        }
-                        ]
-                    },
-                    {
-                        "granuleId": granule_id_2,
-                        "createdAt": createdAt_time,
-                        "files": [
+                            "granuleId": granule_id_1,
+                            "createdAt": createdAt_time,
+                            "files": [
+                                {
+                                    "bucket": bucket_name,
+                                    "key": key_name_1
+                                }
+                            ]
+                        },
                         {
-                            "bucket": bucket_name,
-                            "key": key_name_2
+                            "granuleId": granule_id_2,
+                            "createdAt": createdAt_time,
+                            "files": [
+                                {
+                                    "bucket": bucket_name,
+                                    "key": key_name_2
+                                }
+                            ]
                         }
-                        ]
-                    }
                     ]
                 },
                 "meta": {
@@ -65,11 +66,11 @@ class TestMultipleGranulesHappyPath(TestCase):
                     "name": provider_name
                     },
                     "collection": {
-                    "meta": {
-                        "orca": {
-                        "excludedFileExtensions": excluded_filetype
-                        }
-                    },
+                        "meta": {
+                            "orca": {
+                                "excludedFileExtensions": excluded_filetype
+                            }
+                        },
                     "name": collection_name,
                     "version": collection_version
                     }
@@ -77,7 +78,7 @@ class TestMultipleGranulesHappyPath(TestCase):
                 "cumulus_meta": {
                     "execution_name": execution_id
                 }
-                }
+            }
 
             expected_output = {
                 "payload": {
@@ -163,14 +164,15 @@ class TestMultipleGranulesHappyPath(TestCase):
             # verify that the objects exist in recovery bucket
             try:
                 for key in [key_name_1, key_name_2]:
-                    head_object_output = boto3.client("s3").head_object(Bucket=recovery_bucket_name, Key=key)
+                    head_object_output = boto3.client("s3").head_object(
+                        Bucket=recovery_bucket_name, Key=key)
                     self.assertEqual(
                         200,
                         head_object_output["ResponseMetadata"]["HTTPStatusCode"],
-                        f" Error searching for object {key} in the {recovery_bucket_name}",
+                        f"Error searching for object {key} in the {recovery_bucket_name}",
                     )            
             except Exception as ex:
-                return  ex
+                raise ex
 
             catalog_output = helpers.post_to_api(
                 my_session,
